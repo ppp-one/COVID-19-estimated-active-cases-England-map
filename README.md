@@ -6,3 +6,5 @@
  Latitude/Longitude for each place guessed via OpenCage Geocoding API using the name provided by PHE - sorry if any are off!
  
  Check out a live version <a href='https://open-seneca.org/ppp25/covid/'>here</a>!
+
+![](https://media.giphy.com/media/X9FbvyQM9rwB5d6UnR/giphy.gif)
