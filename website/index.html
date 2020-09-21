@@ -6,10 +6,7 @@
     <title>Estimated active cases</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-    <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,700" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic" rel="stylesheet" type="text/css"> -->
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet" type="text/css">
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"> -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
 
@@ -18,8 +15,6 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.15.6/metricsgraphics.min.js" integrity="sha512-ajcrSc3e0yOZ8tbLioR0G0rrcMvXoJku+UZfOXq2gtwbNLJGhbuzyxo/mAlxHfTegrN51YGvZXT/Gxp7NsIXXw==" crossorigin="anonymous"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.15.6/metricsgraphics.min.css" integrity="sha512-e5dJblUsk+67Y38sR7+4reR7UyT7BuT/8y0r4ZcXh59IGjAMY4UA81lHouD+a82FU9sGvAsLZlDLgAiUFeKXPg==" crossorigin="anonymous" />
@@ -28,7 +23,6 @@
         body {
             margin: 0;
             padding: 0;
-            /* font-family: monospace; */
             font-variant-numeric: tabular-nums;
         }
 
@@ -76,7 +70,6 @@
 
         .map-overlay label {
             font-size: 14px;
-            /* font-weight: bold; */
         }
 
         @media (max-width : 720px) {
@@ -121,37 +114,32 @@
             padding: 10px 0;
         }
 
-        .test {
+        .split {
             display: flex;
             justify-content: space-between;
             width: 100%;
         }
 
         #container {
-  display: flex;                  /* establish flex container */
-  flex-direction: row;            /* default value; can be omitted */
-  flex-wrap: nowrap;              /* default value; can be omitted */
-  justify-content: space-between; /* switched from default (flex-start, see below) */
-  /* background-color: lightyellow; */
-}
-/* #container > div {
-  border: 2px dashed red;
-} */
-
+            display: flex;
+            /* establish flex container */
+            flex-direction: row;
+            /* default value; can be omitted */
+            flex-wrap: nowrap;
+            /* default value; can be omitted */
+            justify-content: space-between;
+            /* switched from default (flex-start, see below) */
+        }
     </style>
     <div id="map"></div>
     <div class="map-overlay top">
         <div class="map-overlay-inner">
-            <h2>Estimated active cases</h2>
+            <h2>Estimated active cases <a href=""><i class="fa fa-github" style="color:#000;"></i></a> <a href="https://twitter.com/Peterpihlmann"><i class="fa fa-twitter" style="color: #1DA1F2;"></i></a></h2>
             <p>(sum of <a href="https://coronavirus.data.gov.uk/">positive cases</a> over the previous <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7289725/">19 days</a>)</p>
             <img src="scale.png" width="100%">
             <img src="sizescale.png" width="100%">
-            <!-- <hr>
-            <p>This is a simple data representation of data publicly available from <a href="https://coronavirus.data.gov.uk/">PHE</a>. I am aware the size of each circle is a function of many things (e.g. testing capacity, population, etc) - I currently have no intention of delving into these problems to model them out. Winter is coming.</p>
-            <hr> -->
             <br>
             <br>
-
             <div id="container">
                 <div>
                     <label id="date"></label>
@@ -164,8 +152,8 @@
                         </label>
                     </div>
                 </div>
-              </div>
-            <div class="test">
+            </div>
+            <div class="split">
                 <button id="play-button">Play</button>
                 <input style="margin-left: 20px; margin-right: 10px; width:100%;" id="slider" type="range" min="0" max="" step="1" value="" />
             </div>
@@ -174,14 +162,14 @@
             </div>
         </div>
     </div>
-    
-    
+
+
     <script>
         var myColor = d3.scaleSequential().domain([-50, 50]).interpolator(d3.interpolateInferno);
         var playButton = d3.select("#play-button");
         var myTimer;
         var map;
-        mapboxgl.accessToken = "YOUR TOKEN HERE";
+        mapboxgl.accessToken = "YOUR TOKEN";
 
         $("#div_customContent").hide();
 
@@ -223,7 +211,6 @@
         });
 
         $(document).on('change', '#popWeight', function () {
-            console.log($("#popWeight").is(':checked'));
             render();
         });
 
@@ -300,8 +287,6 @@
                 .append("circle")
                 .attr("class", "circle")
                 .style("opacity", 0.9);
-            // .style("stroke", "black");
-            // .style("fill", "#ff3636");
 
             svg.selectAll("circle")
                 .data(data)
@@ -331,18 +316,14 @@
                             description: "&nbsp;Population: " + numberWithCommas(d.population) + "&nbsp;",
                             data: data_MG,
                             full_width: true,
-                            // right: 40,
                             left: 90,
-                            // bottom: 50,
                             markers: markers,
                             brush: 'x',
                             y_label: 'Active Cases',
                             color: "black",
                             xax_count: 5,
                             xax_format: d3.timeFormat("%b"),
-                            // point_size: 0,
-
-                            target: "#div_customContent",
+                            target: "#div_customContent"
                         }
                         MG.data_graphic(dirPolar);
                     })
@@ -352,7 +333,7 @@
             render();
         }
 
-        
+
 
         // Projection method:
         // Project geojson coordinate to the map's current state
@@ -381,7 +362,6 @@
                     }
                 })
                 .attr("fill", function (d) {
-                    // console.log(myColor(d.rate[i]));
                     return myColor(d.rate[i]);
                 });
         }
